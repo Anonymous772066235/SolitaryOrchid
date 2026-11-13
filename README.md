@@ -15,22 +15,19 @@
 ├── about/                关于（生成）
 ├── 404.html              自定义 404（生成）
 ├── sitemap.xml / feed.xml / robots.txt / favicon.svg（生成）
-├── css/
-│   ├── site.css          内容站设计系统
-│   └── style.css         旧页面样式（Pages/* 仍在用）
-├── js/
-│   ├── site.js           主题、导航、阅读进度、灯箱、播放器、点云
-│   └── main.js 等        旧页面脚本
+├── travel/               旅行记录（生成，数据取自 src/data/travel.json）
+├── css/site.css          内容站设计系统（唯一全局样式）
+├── js/site.js            主题、Pjax 导航、阅读增强、灯箱、播放器、点云
 ├── Pages/
-│   ├── drawing/          涂鸦原页面与图片（图片被新 gallery 复用）
-│   ├── music/            音乐原页面与音频、封面（被新 music 复用）
-│   └── enshi/            旅行记录（旧模板页，导航直接链接）
+│   ├── drawing/          跳转页 + 涂鸦图片（图片被 gallery 复用）
+│   ├── music/            跳转页 + 音频与封面（被 music 复用）
+│   └── enshi/            跳转页 + 风景照（图片被 travel 复用）
 ├── src/
 │   ├── build.ps1         构建脚本
 │   ├── layouts/          base / home / post / post-list / page 模板
 │   ├── content/posts/    文章 Markdown
 │   ├── content/pages/    独立页面 Markdown（about）
-│   └── data/music.json   音乐页数据
+│   └── data/             页面数据（gallery.json / music.json）
 └── .nojekyll             跳过 Jekyll，原样发布
 ```
 
@@ -73,10 +70,13 @@ powershell -ExecutionPolicy Bypass -File src\build.ps1
 
 ## 功能
 
+- Pjax 无刷新导航：页面切换只替换 `<main>`，**音乐不中断**、自动续播下一首
+- 全站常驻浮动播放器（单曲切换、进度拖动、曲目记忆）
+- 首页唱机：封面随播放旋转，曲目列表一键切换
 - 深浅色切换（跟随系统 + 手动记忆）
 - 文章阅读进度条、目录跟随高亮
-- 涂鸦页年份筛选 + 原生 `<dialog>` 灯箱
-- 音乐页底部常驻播放器，记住上次曲目与进度
+- 涂鸦页年份筛选 + 马赛克错落布局 + 原生 `<dialog>` 灯箱
+- 旅行页图片网格与灯箱，景点图文分节
 - 首页 Canvas 2D 点云动画（无 Three.js 依赖，尊重 `prefers-reduced-motion`）
 
 ## 部署

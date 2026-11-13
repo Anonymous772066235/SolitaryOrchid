@@ -29,6 +29,33 @@
         <p class="muted">手写 HTML / CSS / JS，静态生成，托管于 GitHub Pages。</p>
     </div>
 </footer>
+<div class="gplayer" id="gplayer" data-folded="true" role="region" aria-label="播放器">
+    <button class="gp-toggle" type="button" aria-label="展开播放器">
+        <img class="gp-mini-cover" alt="">
+    </button>
+    <div class="gp-card">
+        <div class="gp-drag" title="按住拖动位置">
+            <img class="gp-cover" alt="">
+            <div class="gp-meta">
+                <div class="gp-title"></div>
+                <div class="gp-sub"></div>
+            </div>
+            <button class="gp-fold" type="button" aria-label="收起播放器">–</button>
+        </div>
+        <div class="gp-seek">
+            <span class="gp-cur">0:00</span>
+            <input type="range" min="0" max="100" value="0" aria-label="播放进度">
+            <span class="gp-dur">0:00</span>
+        </div>
+        <div class="gp-btns">
+            <button class="prev" type="button" aria-label="上一首">⏮</button>
+            <button class="play" type="button" aria-label="播放/暂停">▶</button>
+            <button class="next" type="button" aria-label="下一首">⏭</button>
+        </div>
+    </div>
+</div>
+<audio id="gaudio" preload="metadata"></audio>
+<script type="application/json" id="site-playlist">{{PLAYLIST}}</script>
 <script src="{{ROOT}}js/site.js" defer></script>
 {{EXTRA_FOOT}}
 </body>

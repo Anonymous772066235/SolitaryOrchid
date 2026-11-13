@@ -16,7 +16,7 @@
     <div class="wrap header-inner">
         <a class="brand" href="../../index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">随手记</span></a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">菜单</button>
-        <nav id="site-nav" class="site-nav" aria-label="主导航"><a href="../../index.html">首页</a><a class="active" href="../../posts/index.html">文章</a><a href="../../gallery/index.html">涂鸦</a><a href="../../music/index.html">听歌</a><a href="../../Pages/enshi/enshi.html">旅行</a><a href="../../about/index.html">关于</a></nav>
+        <nav id="site-nav" class="site-nav" aria-label="主导航"><a href="../../index.html">首页</a><a href="../../gallery/index.html">涂鸦</a><a href="../../music/index.html">听歌</a><a href="../../travel/index.html">旅行</a><a href="../../about/index.html">关于</a></nav>
         <button class="theme-toggle" type="button" aria-label="切换深浅色">◐</button>
     </div>
 </header>
@@ -96,6 +96,33 @@ summary: 一句话摘要
         <p class="muted">手写 HTML / CSS / JS，静态生成，托管于 GitHub Pages。</p>
     </div>
 </footer>
+<div class="gplayer" id="gplayer" data-folded="true" role="region" aria-label="播放器">
+    <button class="gp-toggle" type="button" aria-label="展开播放器">
+        <img class="gp-mini-cover" alt="">
+    </button>
+    <div class="gp-card">
+        <div class="gp-drag" title="按住拖动位置">
+            <img class="gp-cover" alt="">
+            <div class="gp-meta">
+                <div class="gp-title"></div>
+                <div class="gp-sub"></div>
+            </div>
+            <button class="gp-fold" type="button" aria-label="收起播放器">–</button>
+        </div>
+        <div class="gp-seek">
+            <span class="gp-cur">0:00</span>
+            <input type="range" min="0" max="100" value="0" aria-label="播放进度">
+            <span class="gp-dur">0:00</span>
+        </div>
+        <div class="gp-btns">
+            <button class="prev" type="button" aria-label="上一首">⏮</button>
+            <button class="play" type="button" aria-label="播放/暂停">▶</button>
+            <button class="next" type="button" aria-label="下一首">⏭</button>
+        </div>
+    </div>
+</div>
+<audio id="gaudio" preload="metadata"></audio>
+<script type="application/json" id="site-playlist">[{"src":"../../Pages/music/music/Bad%20Style%20-%20Time%20Back.mp3","title":"Time Back","sub":"Bad Style","cover":"../../Pages/music/img/Kontrabanda-Bad%20Style.jpg"},{"src":"../../Pages/music/music/Be%20As%20One.mP3","title":"Be As One","sub":"w-inds.","cover":"../../Pages/music/img/w-inds.10th%20Anniversary%20Best%20Album-We%20sing%20for%20yo.jpg"},{"src":"../../Pages/music/music/Gavin%20James%20-%20Nervous%20-%20The%20Ooh%20Song%20(Mark%20McCabe%20Remix).mp3","title":"Nervous (The Ooh Song)","sub":"Gavin James · Mark McCabe Remix","cover":"../../Pages/music/img/Nervous%20(The%20Ooh%20Song_%20Mark%20McCabe%20Remix)-Gavin%20J.jpg"},{"src":"../../Pages/music/music/%E5%91%A8%E6%98%9F%E9%A9%B0%20-%20%E6%9D%8E%E9%A6%99%E5%85%B0.mp3","title":"李香兰","sub":"国产凌凌漆 电影原声带","cover":"../../Pages/music/img/%E5%9B%BD%E4%BA%A7%E5%87%8C%E5%87%8C%E6%BC%86%20%E7%94%B5%E5%BD%B1%E5%8E%9F%E5%A3%B0%E5%B8%A6-%E5%91%A8%E6%98%9F%E9%A9%B0.jpg"},{"src":"../../Pages/music/music/%E7%8E%89%E7%92%87%E7%8E%91%20-%20%E7%A7%A6%E6%B7%AE%E5%85%AB%E8%89%B3.mp3","title":"秦淮八艳","sub":"玉璇玑","cover":"../../Pages/music/img/%E7%A7%A6%E6%B7%AE%E5%85%AB%E8%89%B3-%E7%8E%89%E7%92%87%E7%8E%91.jpg"},{"src":"../../Pages/music/music/%E8%AE%B8%E5%B5%A9%20-%20%E7%A7%8B%E5%8D%83%E5%9D%A0.mp3","title":"秋千坠","sub":"许嵩","cover":"../../Pages/music/img/%E6%83%85%E4%BE%A3%E8%A3%85-%E8%AE%B8%E5%B5%A9.jpg"},{"src":"../../Pages/music/music/%E9%A9%AC%E9%A0%94%20-%20%E5%8D%97%E5%B1%B1%E5%8D%97.mp3","title":"南山南","sub":"马頔","cover":"../../Pages/music/img/%E5%BE%80%E5%A4%8D%E9%9A%8F%E5%AE%89-%E9%A9%AC%E9%A0%94.jpg"},{"src":"../../Pages/music/music/%E9%BB%84%E8%AF%97%E6%89%B6%20-%20%E6%8E%A2%E6%B8%85%E6%B0%B4%E6%B2%B3.mp3","title":"探清水河","sub":"黄诗扶","cover":"../../Pages/music/img/%E4%BA%BA%E9%97%B4%E4%B8%8D%E5%80%BC%E5%BE%97-%E9%BB%84%E8%AF%97%E6%89%B6.jpg"}]</script>
 <script src="../../js/site.js" defer></script>
 
 </body>

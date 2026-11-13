@@ -199,10 +199,9 @@ function Render([string]$layout, [hashtable]$vars) {
 function Get-Nav([string]$root, [string]$active) {
     $items = @(
         @{ k = 'home';    t = '首页'; h = $root + 'index.html' },
-        @{ k = 'posts';   t = '文章'; h = $root + 'posts/index.html' },
         @{ k = 'gallery'; t = '涂鸦'; h = $root + 'gallery/index.html' },
         @{ k = 'music';   t = '听歌'; h = $root + 'music/index.html' },
-        @{ k = 'travel';  t = '旅行'; h = $root + 'Pages/enshi/enshi.html' },
+        @{ k = 'travel';  t = '旅行'; h = $root + 'travel/index.html' },
         @{ k = 'about';   t = '关于'; h = $root + 'about/index.html' }
     )
     $sb = New-Object System.Text.StringBuilder
@@ -215,6 +214,18 @@ function Get-Nav([string]$root, [string]$active) {
 }
 
 function Wrap([string]$root, [string]$title, [string]$desc, [string]$body, [string]$active) {
+    $pl = @()
+    foreach ($t in $tracks) {
+        $pl += [pscustomobject]@{
+            src   = $root + 'Pages/music/music/' + [uri]::EscapeDataString($t.file)
+            title = $t.title
+            sub   = $t.sub
+            cover = $root + 'Pages/music/img/' + [uri]::EscapeDataString($t.cover)
+        }
+    }
+    $playlistJson = '[]'
+    if ($pl.Count -gt 0) { $playlistJson = ($pl | ConvertTo-Json -Compress -Depth 3) }
+
     return Render 'base' @{
         SITE_TITLE = $siteTitle
         TITLE      = $title
@@ -225,6 +236,7 @@ function Wrap([string]$root, [string]$title, [string]$desc, [string]$body, [stri
         YEAR       = [string]$year
         EXTRA_HEAD = ''
         EXTRA_FOOT = ''
+        PLAYLIST   = $playlistJson
     }
 }
 
@@ -252,6 +264,11 @@ $posts = @()
 foreach ($f in $postFiles) { $posts += (Parse-Post $f.FullName) }
 $posts = @($posts | Sort-Object { [datetime]$_.Date } -Descending)
 Write-Host ('读取文章: {0} 篇' -f $posts.Count)
+
+# 页面数据（涂鸦 / 音乐）提前加载，首页与列表页共用
+$works  = Get-Content -LiteralPath (Join-Path $src 'data\gallery.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+$tracks = Get-Content -LiteralPath (Join-Path $src 'data\music.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+$travel = Get-Content -LiteralPath (Join-Path $src 'data\travel.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 
 # --------------------------------------------------------------------------
 # 文章页
@@ -305,18 +322,54 @@ Write-Utf8 (Join-Path $repo 'posts\index.html') $listHtml
 # --------------------------------------------------------------------------
 # 首页
 # --------------------------------------------------------------------------
-$latestSb = New-Object System.Text.StringBuilder
-$max = [Math]::Min(3, $posts.Count)
-for ($i = 0; $i -lt $max; $i++) {
-    $p = $posts[$i]
-    [void]$latestSb.Append('<a class="card" href="posts/' + $p.Slug + '/index.html">')
-    [void]$latestSb.Append('<span class="card-kicker">' + (Esc $p.Date) + '</span>')
-    [void]$latestSb.Append('<h3>' + (Esc $p.Title) + '</h3>')
-    [void]$latestSb.Append('<p>' + (Esc $p.Summary) + '</p>')
-    [void]$latestSb.Append('<span class="card-meta">约 ' + $p.Minutes + ' 分钟</span>')
-    [void]$latestSb.Append('</a>')
+# 首页：唱机（全部曲目，默认第一首）
+$studioListSb = New-Object System.Text.StringBuilder
+$n = 0
+foreach ($t in $tracks) {
+    $n++
+    $audio = './Pages/music/music/' + [uri]::EscapeDataString($t.file)
+    $cover = './Pages/music/img/' + [uri]::EscapeDataString($t.cover)
+    $cls = ''
+    if ($n -eq 1) { $cls = ' active' }
+    [void]$studioListSb.Append('<button type="button" class="studio-item' + $cls + '" data-src="' + $audio + '" data-title="' + (Esc $t.title) + '" data-sub="' + (Esc $t.sub) + '" data-cover="' + $cover + '">')
+    [void]$studioListSb.Append('<span class="idx">' + ('{0:D2}' -f $n) + '</span>' + (Esc $t.title))
+    [void]$studioListSb.Append('</button>')
 }
-$homeBody = Render 'home' @{ ROOT = './'; LATEST = $latestSb.ToString() }
+$firstTrack  = $tracks[0]
+$studioCover = './Pages/music/img/' + [uri]::EscapeDataString($firstTrack.cover)
+$studioTitle = Esc $firstTrack.title
+$studioSub   = Esc $firstTrack.sub
+
+# 首页：画廊入口拼贴（最新 4 张）
+$collageSb = New-Object System.Text.StringBuilder
+foreach ($w in @($works | Sort-Object { [int]$_.num } -Descending | Select-Object -First 4)) {
+    $img = './Pages/drawing/images/' + $w.num + '-small.jpg'
+    [void]$collageSb.Append('<img src="' + $img + '" alt="' + (Esc $w.name) + '" loading="lazy">')
+}
+
+# 首页：去过的地方（3 张）
+$photoSb = New-Object System.Text.StringBuilder
+$photos = @(
+    @{ f = '大峡谷01.jpg'; t = '大峡谷' },
+    @{ f = '女儿城01.jpg'; t = '女儿城' },
+    @{ f = '屏山01.jpg'; t = '屏山' }
+)
+foreach ($ph in $photos) {
+    $photoUrl = './Pages/enshi/images/' + [uri]::EscapeDataString($ph.f)
+    [void]$photoSb.Append('<a class="thumb" href="./travel/index.html"><img src="' + $photoUrl + '" alt="' + (Esc $ph.t) + '" loading="lazy"><span>' + (Esc $ph.t) + '</span></a>')
+}
+
+$homeBody = Render 'home' @{
+    ROOT         = './'
+    STUDIO_COVER = $studioCover
+    STUDIO_TITLE = $studioTitle
+    STUDIO_SUB   = $studioSub
+    STUDIO_LIST  = $studioListSb.ToString()
+    COLLAGE      = $collageSb.ToString()
+    PHOTOS       = $photoSb.ToString()
+    WORKCOUNT    = [string]$works.Count
+    TRACKCOUNT   = [string]$tracks.Count
+}
 $homeHtml = Wrap './' ($siteTitle + ' · ' + $siteDesc) $siteDesc $homeBody 'home'
 Write-Utf8 (Join-Path $repo 'index.html') $homeHtml
 
@@ -335,16 +388,13 @@ Write-Utf8 (Join-Path $repo 'about\index.html') $aboutHtml
 # --------------------------------------------------------------------------
 # 涂鸦页
 # --------------------------------------------------------------------------
-$drawingRaw = Read-Utf8 (Join-Path $repo 'Pages\drawing\drawing.html')
-$anchors = [regex]::Matches($drawingRaw, '<a href="images/(\d+)-small\.jpg"\s+title="([^"]*)"(?s).{0,400}?<h4>([^<]*)</h4>')
 $figures = New-Object System.Text.StringBuilder
 $years = @{}
-foreach ($m in $anchors) {
-    $num = $m.Groups[1].Value
-    $cap = $m.Groups[2].Value
-    $name = $m.Groups[3].Value
-    $y = ''
-    if ($cap -match '(\d{4})\s*年') { $y = $Matches[1] }
+foreach ($m in $works) {
+    $num = $m.num
+    $cap = $m.caption
+    $name = $m.name
+    $y = $m.year
     if ($y) { $years[$y] = $true }
     $imgUrl = '../Pages/drawing/images/' + $num + '-small.jpg'
     [void]$figures.Append('<figure data-year="' + $y + '" data-full="' + $imgUrl + '" data-caption="' + (Esc ($name + ' · ' + $cap)) + '">')
@@ -366,7 +416,7 @@ $galleryBody = @'
     <div class="filter-bar" role="group" aria-label="按年份筛选">
 __FILTER__
     </div>
-    <div class="gallery">
+    <div class="mosaic">
 __FIGURES__
     </div>
 </div>
@@ -379,12 +429,11 @@ __FIGURES__
 $galleryBody = $galleryBody.Replace('__FILTER__', $filterSb.ToString()).Replace('__FIGURES__', $figures.ToString())
 $galleryHtml = Wrap '../' ('乱涂乱画 · ' + $siteTitle) '手绘与数位板涂鸦合集，按年份筛选，点击查看大图。' $galleryBody 'gallery'
 Write-Utf8 (Join-Path $repo 'gallery\index.html') $galleryHtml
-Write-Host ('涂鸦: {0} 张, 年份 {1}' -f $anchors.Count, (($years.Keys | Sort-Object) -join '/'))
+Write-Host ('涂鸦: {0} 张, 年份 {1}' -f $works.Count, (($years.Keys | Sort-Object) -join '/'))
 
 # --------------------------------------------------------------------------
 # 听歌页
 # --------------------------------------------------------------------------
-$tracks = Get-Content -LiteralPath (Join-Path $src 'data\music.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $trackSb = New-Object System.Text.StringBuilder
 foreach ($t in $tracks) {
     $audio = '../Pages/music/music/' + [uri]::EscapeDataString($t.file)
@@ -405,30 +454,51 @@ $musicBody = @'
 __TRACKS__
     </div>
 </div>
-<div class="player">
-    <div class="wrap player-inner">
-        <img class="player-cover" alt="">
-        <div>
-            <div class="player-title"></div>
-            <div class="player-sub"></div>
-            <div class="player-seek">
-                <span class="t-cur">0:00</span>
-                <input type="range" min="0" max="100" value="0" aria-label="播放进度">
-                <span class="t-dur">0:00</span>
-            </div>
-        </div>
-        <div class="player-btns">
-            <button class="prev" type="button" aria-label="上一首">⏮</button>
-            <button class="play" type="button" aria-label="播放/暂停">▶</button>
-            <button class="next" type="button" aria-label="下一首">⏭</button>
-        </div>
-    </div>
-</div>
 '@
 $musicBody = $musicBody.Replace('__TRACKS__', $trackSb.ToString())
 $musicHtml = Wrap '../' ('听歌看剧 · ' + $siteTitle) '循环过的歌与反复看的电影，内置底部播放器。' $musicBody 'music'
 Write-Utf8 (Join-Path $repo 'music\index.html') $musicHtml
 Write-Host ('曲目: {0} 首' -f $tracks.Count)
+
+# --------------------------------------------------------------------------
+# 旅行页
+# --------------------------------------------------------------------------
+$spotFigs = New-Object System.Text.StringBuilder
+$spotText = New-Object System.Text.StringBuilder
+foreach ($s in $travel.spots) {
+    $img = '../Pages/enshi/images/' + [uri]::EscapeDataString($s.image)
+    [void]$spotFigs.Append('<figure data-full="' + $img + '" data-caption="' + (Esc $s.name) + '">')
+    [void]$spotFigs.Append('<img src="' + $img + '" alt="' + (Esc $s.name) + '" loading="lazy">')
+    [void]$spotFigs.Append('<figcaption>' + (Esc $s.name) + '</figcaption>')
+    [void]$spotFigs.Append('</figure>')
+    [void]$spotText.Append('<div class="spot"><h2>' + (Esc $s.name) + '</h2><p>' + (Esc $s.text) + '</p></div>')
+}
+$travelBody = @'
+<div class="wrap">
+    <header class="article-head">
+        <h1>__TITLE__</h1>
+        <p class="muted">__LEAD__</p>
+    </header>
+    <div class="prose" style="padding-bottom:22px">
+        <p>__INTRO__</p>
+    </div>
+    <div class="travel-grid">
+__FIGURES__
+    </div>
+    <div style="padding-bottom:64px">
+__SPOTS__
+    </div>
+</div>
+<dialog class="lightbox">
+    <button class="lb-close" type="button" aria-label="关闭">×</button>
+    <img alt="">
+    <div class="lb-caption"></div>
+</dialog>
+'@
+$travelBody = $travelBody.Replace('__TITLE__', (Esc $travel.title)).Replace('__LEAD__', (Esc $travel.lead)).Replace('__INTRO__', (Esc $travel.intro)).Replace('__FIGURES__', $spotFigs.ToString()).Replace('__SPOTS__', $spotText.ToString())
+$travelHtml = Wrap '../' ($travel.title + ' · ' + $siteTitle) ([string]$travel.lead) $travelBody 'travel'
+Write-Utf8 (Join-Path $repo 'travel\index.html') $travelHtml
+Write-Host ('旅行: {0} 个景点' -f $travel.spots.Count)
 
 # --------------------------------------------------------------------------
 # 404 / robots / sitemap / feed / favicon
@@ -448,7 +518,7 @@ $siteBase = 'https://anonymous772066235.github.io/SolitaryOrchid/'
 $sm = New-Object System.Text.StringBuilder
 [void]$sm.Append('<?xml version="1.0" encoding="UTF-8"?>' + "`n")
 [void]$sm.Append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + "`n")
-foreach ($u in @('', 'posts/', 'gallery/', 'music/', 'about/')) {
+foreach ($u in @('', 'posts/', 'gallery/', 'music/', 'travel/', 'about/')) {
     [void]$sm.Append('  <url><loc>' + $siteBase + $u + '</loc></url>' + "`n")
 }
 foreach ($p in $posts) {
@@ -457,7 +527,8 @@ foreach ($p in $posts) {
 [void]$sm.Append('</urlset>' + "`n")
 Write-Utf8 (Join-Path $repo 'sitemap.xml') $sm.ToString()
 
-$updated = (Get-Date).ToString('yyyy-MM-ddTHH:mm:sszzz')
+$updated = '2026-01-01T00:00:00+08:00'
+if ($posts.Count -gt 0) { $updated = $posts[0].Date + 'T00:00:00+08:00' }
 $fe = New-Object System.Text.StringBuilder
 [void]$fe.Append('<?xml version="1.0" encoding="utf-8"?>' + "`n")
 [void]$fe.Append('<feed xmlns="http://www.w3.org/2005/Atom">' + "`n")

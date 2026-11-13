@@ -1,56 +1,69 @@
 <section class="hero">
     <canvas id="hero-canvas" aria-hidden="true"></canvas>
     <div class="wrap hero-inner">
-        <span class="hero-eyebrow">三维数据处理与可视化 · 生活碎片</span>
-        <h1>把兴趣写成<em>可以慢慢长大的页面</em></h1>
-        <p class="lead">这里记录技术笔记（三维数据处理、可视化、前端）与生活里的小事：听歌、看剧、涂鸦、旅行。内容用 Markdown 写，构建成静态页。</p>
+        <span class="hero-eyebrow">点云 · 涂鸦 · 音乐 · 旅行</span>
+        <h1>点云、涂鸦，<br>和八首<em>循环播放</em>的歌</h1>
+        <p class="lead">白天调点云和网格，晚上涂两笔、听几首歌。这里放那些没地方放的碎东西。</p>
         <div class="hero-actions">
-            <a class="btn btn-primary" href="{{ROOT}}posts/index.html">读文章</a>
-            <a class="btn" href="{{ROOT}}about/index.html">关于我</a>
+            <a class="btn btn-primary" href="{{ROOT}}gallery/index.html">看涂鸦</a>
+            <a class="btn" href="{{ROOT}}music/index.html">全部歌单</a>
         </div>
     </div>
 </section>
 
-<section class="section">
+<section class="section reveal">
     <div class="wrap">
         <div class="section-head">
-            <h2>最新文章</h2>
-            <a href="{{ROOT}}posts/index.html">全部文章 →</a>
+            <h2>随便听听</h2>
+            <a href="{{ROOT}}music/index.html">全部 {{TRACKCOUNT}} 首 →</a>
         </div>
-        <div class="cards">
-{{LATEST}}
+        <div class="studio">
+            <div class="studio-cover-wrap">
+                <img class="studio-cover" src="{{STUDIO_COVER}}" alt="{{STUDIO_TITLE}} 封面">
+            </div>
+            <div class="studio-info">
+                <h3 class="studio-title">{{STUDIO_TITLE}}</h3>
+                <p class="studio-sub">{{STUDIO_SUB}}</p>
+                <div class="studio-seek">
+                    <span class="sp-cur">0:00</span>
+                    <input type="range" min="0" max="100" value="0" aria-label="播放进度">
+                    <span class="sp-dur">0:00</span>
+                </div>
+                <div class="studio-btns">
+                    <button class="prev" type="button" aria-label="上一首">⏮</button>
+                    <button class="play" type="button" aria-label="播放/暂停">▶</button>
+                    <button class="next" type="button" aria-label="下一首">⏭</button>
+                </div>
+            </div>
+            <div class="studio-list" role="list">
+{{STUDIO_LIST}}
+            </div>
         </div>
     </div>
 </section>
 
-<section class="section">
+<section class="section reveal">
     <div class="wrap">
-        <div class="section-head"><h2>逛逛别的</h2></div>
-        <div class="cards">
-            <a class="card" href="{{ROOT}}gallery/index.html">
+        <a class="gallery-entry" href="{{ROOT}}gallery/index.html">
+            <div class="ge-collage">{{COLLAGE}}</div>
+            <div class="ge-text">
                 <span class="card-kicker">Gallery</span>
-                <h3>乱涂乱画</h3>
-                <p>2014 年至今的涂鸦，点开可看大图。</p>
-                <span class="card-meta">16 张 · 年份筛选</span>
-            </a>
-            <a class="card" href="{{ROOT}}music/index.html">
-                <span class="card-kicker">Music</span>
-                <h3>听歌看剧</h3>
-                <p>几首单曲循环，和几部反复看的电影。</p>
-                <span class="card-meta">8 首 · 内置播放器</span>
-            </a>
-            <a class="card" href="{{ROOT}}Pages/enshi/enshi.html">
-                <span class="card-kicker">Travel</span>
-                <h3>湖北恩施</h3>
-                <p>鄂西林海、华中药库、世界硒都。</p>
-                <span class="card-meta">旅行记录</span>
-            </a>
-            <a class="card" href="{{ROOT}}about/index.html">
-                <span class="card-kicker">About</span>
-                <h3>关于</h3>
-                <p>时间线、在折腾的事、怎么找我。</p>
-                <span class="card-meta">更新中</span>
-            </a>
+                <h2>乱涂乱画</h2>
+                <p>2014 年到现在，{{WORKCOUNT}} 张手绘和数位板上的随手涂。点开能看大图，也能按年份翻。</p>
+                <span class="ge-cta">进去逛逛 →</span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<section class="section reveal">
+    <div class="wrap">
+        <div class="section-head">
+            <h2>去过的地方</h2>
+            <a href="{{ROOT}}travel/index.html">恩施记录 →</a>
+        </div>
+        <div class="thumb-grid">
+{{PHOTOS}}
         </div>
     </div>
 </section>

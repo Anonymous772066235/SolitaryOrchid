@@ -16,7 +16,7 @@
     <div class="wrap header-inner">
         <a class="brand" href="./index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">随手记</span></a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">菜单</button>
-        <nav id="site-nav" class="site-nav" aria-label="主导航"><a class="active" href="./index.html">首页</a><a href="./posts/index.html">文章</a><a href="./gallery/index.html">涂鸦</a><a href="./music/index.html">听歌</a><a href="./Pages/enshi/enshi.html">旅行</a><a href="./about/index.html">关于</a></nav>
+        <nav id="site-nav" class="site-nav" aria-label="主导航"><a class="active" href="./index.html">首页</a><a href="./gallery/index.html">涂鸦</a><a href="./music/index.html">听歌</a><a href="./travel/index.html">旅行</a><a href="./about/index.html">关于</a></nav>
         <button class="theme-toggle" type="button" aria-label="切换深浅色">◐</button>
     </div>
 </header>
@@ -24,56 +24,69 @@
 <section class="hero">
     <canvas id="hero-canvas" aria-hidden="true"></canvas>
     <div class="wrap hero-inner">
-        <span class="hero-eyebrow">三维数据处理与可视化 · 生活碎片</span>
-        <h1>把兴趣写成<em>可以慢慢长大的页面</em></h1>
-        <p class="lead">这里记录技术笔记（三维数据处理、可视化、前端）与生活里的小事：听歌、看剧、涂鸦、旅行。内容用 Markdown 写，构建成静态页。</p>
+        <span class="hero-eyebrow">点云 · 涂鸦 · 音乐 · 旅行</span>
+        <h1>点云、涂鸦，<br>和八首<em>循环播放</em>的歌</h1>
+        <p class="lead">白天调点云和网格，晚上涂两笔、听几首歌。这里放那些没地方放的碎东西。</p>
         <div class="hero-actions">
-            <a class="btn btn-primary" href="./posts/index.html">读文章</a>
-            <a class="btn" href="./about/index.html">关于我</a>
+            <a class="btn btn-primary" href="./gallery/index.html">看涂鸦</a>
+            <a class="btn" href="./music/index.html">全部歌单</a>
         </div>
     </div>
 </section>
 
-<section class="section">
+<section class="section reveal">
     <div class="wrap">
         <div class="section-head">
-            <h2>最新文章</h2>
-            <a href="./posts/index.html">全部文章 →</a>
+            <h2>随便听听</h2>
+            <a href="./music/index.html">全部 8 首 →</a>
         </div>
-        <div class="cards">
-<a class="card" href="posts/static-build-pipeline/index.html"><span class="card-kicker">2026-11-13</span><h3>一个够用的静态构建脚本</h3><p>不装任何运行时，只用系统自带的脚本把 Markdown 变成整站 HTML：解析 front matter、转换正文、生成归档与订阅源。</p><span class="card-meta">约 2 分钟</span></a><a class="card" href="posts/from-showcase-to-blog/index.html"><span class="card-kicker">2026-11-13</span><h3>从展示页到内容站</h3><p>把 4 个互不相干的展示页，改造成一个有文章、有归档、能持续生长的静态站。</p><span class="card-meta">约 3 分钟</span></a><a class="card" href="posts/canvas-point-cloud/index.html"><span class="card-kicker">2026-11-13</span><h3>用 Canvas 2D 画一朵旋转的点云</h3><p>不引入 Three.js，只用一个 canvas 和几十行数学，把球面点云投影到屏幕：旋转、透视、深度衰减。</p><span class="card-meta">约 2 分钟</span></a>
+        <div class="studio">
+            <div class="studio-cover-wrap">
+                <img class="studio-cover" src="./Pages/music/img/Kontrabanda-Bad%20Style.jpg" alt="Time Back 封面">
+            </div>
+            <div class="studio-info">
+                <h3 class="studio-title">Time Back</h3>
+                <p class="studio-sub">Bad Style</p>
+                <div class="studio-seek">
+                    <span class="sp-cur">0:00</span>
+                    <input type="range" min="0" max="100" value="0" aria-label="播放进度">
+                    <span class="sp-dur">0:00</span>
+                </div>
+                <div class="studio-btns">
+                    <button class="prev" type="button" aria-label="上一首">⏮</button>
+                    <button class="play" type="button" aria-label="播放/暂停">▶</button>
+                    <button class="next" type="button" aria-label="下一首">⏭</button>
+                </div>
+            </div>
+            <div class="studio-list" role="list">
+<button type="button" class="studio-item active" data-src="./Pages/music/music/Bad%20Style%20-%20Time%20Back.mp3" data-title="Time Back" data-sub="Bad Style" data-cover="./Pages/music/img/Kontrabanda-Bad%20Style.jpg"><span class="idx">01</span>Time Back</button><button type="button" class="studio-item" data-src="./Pages/music/music/Be%20As%20One.mP3" data-title="Be As One" data-sub="w-inds." data-cover="./Pages/music/img/w-inds.10th%20Anniversary%20Best%20Album-We%20sing%20for%20yo.jpg"><span class="idx">02</span>Be As One</button><button type="button" class="studio-item" data-src="./Pages/music/music/Gavin%20James%20-%20Nervous%20-%20The%20Ooh%20Song%20(Mark%20McCabe%20Remix).mp3" data-title="Nervous (The Ooh Song)" data-sub="Gavin James · Mark McCabe Remix" data-cover="./Pages/music/img/Nervous%20(The%20Ooh%20Song_%20Mark%20McCabe%20Remix)-Gavin%20J.jpg"><span class="idx">03</span>Nervous (The Ooh Song)</button><button type="button" class="studio-item" data-src="./Pages/music/music/%E5%91%A8%E6%98%9F%E9%A9%B0%20-%20%E6%9D%8E%E9%A6%99%E5%85%B0.mp3" data-title="李香兰" data-sub="国产凌凌漆 电影原声带" data-cover="./Pages/music/img/%E5%9B%BD%E4%BA%A7%E5%87%8C%E5%87%8C%E6%BC%86%20%E7%94%B5%E5%BD%B1%E5%8E%9F%E5%A3%B0%E5%B8%A6-%E5%91%A8%E6%98%9F%E9%A9%B0.jpg"><span class="idx">04</span>李香兰</button><button type="button" class="studio-item" data-src="./Pages/music/music/%E7%8E%89%E7%92%87%E7%8E%91%20-%20%E7%A7%A6%E6%B7%AE%E5%85%AB%E8%89%B3.mp3" data-title="秦淮八艳" data-sub="玉璇玑" data-cover="./Pages/music/img/%E7%A7%A6%E6%B7%AE%E5%85%AB%E8%89%B3-%E7%8E%89%E7%92%87%E7%8E%91.jpg"><span class="idx">05</span>秦淮八艳</button><button type="button" class="studio-item" data-src="./Pages/music/music/%E8%AE%B8%E5%B5%A9%20-%20%E7%A7%8B%E5%8D%83%E5%9D%A0.mp3" data-title="秋千坠" data-sub="许嵩" data-cover="./Pages/music/img/%E6%83%85%E4%BE%A3%E8%A3%85-%E8%AE%B8%E5%B5%A9.jpg"><span class="idx">06</span>秋千坠</button><button type="button" class="studio-item" data-src="./Pages/music/music/%E9%A9%AC%E9%A0%94%20-%20%E5%8D%97%E5%B1%B1%E5%8D%97.mp3" data-title="南山南" data-sub="马頔" data-cover="./Pages/music/img/%E5%BE%80%E5%A4%8D%E9%9A%8F%E5%AE%89-%E9%A9%AC%E9%A0%94.jpg"><span class="idx">07</span>南山南</button><button type="button" class="studio-item" data-src="./Pages/music/music/%E9%BB%84%E8%AF%97%E6%89%B6%20-%20%E6%8E%A2%E6%B8%85%E6%B0%B4%E6%B2%B3.mp3" data-title="探清水河" data-sub="黄诗扶" data-cover="./Pages/music/img/%E4%BA%BA%E9%97%B4%E4%B8%8D%E5%80%BC%E5%BE%97-%E9%BB%84%E8%AF%97%E6%89%B6.jpg"><span class="idx">08</span>探清水河</button>
+            </div>
         </div>
     </div>
 </section>
 
-<section class="section">
+<section class="section reveal">
     <div class="wrap">
-        <div class="section-head"><h2>逛逛别的</h2></div>
-        <div class="cards">
-            <a class="card" href="./gallery/index.html">
+        <a class="gallery-entry" href="./gallery/index.html">
+            <div class="ge-collage"><img src="./Pages/drawing/images/16-small.jpg" alt="多肉" loading="lazy"><img src="./Pages/drawing/images/15-small.jpg" alt="荷" loading="lazy"><img src="./Pages/drawing/images/14-small.jpg" alt="神仙姐姐" loading="lazy"><img src="./Pages/drawing/images/13-small.jpg" alt="玛蒂尔达" loading="lazy"></div>
+            <div class="ge-text">
                 <span class="card-kicker">Gallery</span>
-                <h3>乱涂乱画</h3>
-                <p>2014 年至今的涂鸦，点开可看大图。</p>
-                <span class="card-meta">16 张 · 年份筛选</span>
-            </a>
-            <a class="card" href="./music/index.html">
-                <span class="card-kicker">Music</span>
-                <h3>听歌看剧</h3>
-                <p>几首单曲循环，和几部反复看的电影。</p>
-                <span class="card-meta">8 首 · 内置播放器</span>
-            </a>
-            <a class="card" href="./Pages/enshi/enshi.html">
-                <span class="card-kicker">Travel</span>
-                <h3>湖北恩施</h3>
-                <p>鄂西林海、华中药库、世界硒都。</p>
-                <span class="card-meta">旅行记录</span>
-            </a>
-            <a class="card" href="./about/index.html">
-                <span class="card-kicker">About</span>
-                <h3>关于</h3>
-                <p>时间线、在折腾的事、怎么找我。</p>
-                <span class="card-meta">更新中</span>
-            </a>
+                <h2>乱涂乱画</h2>
+                <p>2014 年到现在，16 张手绘和数位板上的随手涂。点开能看大图，也能按年份翻。</p>
+                <span class="ge-cta">进去逛逛 →</span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<section class="section reveal">
+    <div class="wrap">
+        <div class="section-head">
+            <h2>去过的地方</h2>
+            <a href="./travel/index.html">恩施记录 →</a>
+        </div>
+        <div class="thumb-grid">
+<a class="thumb" href="./travel/index.html"><img src="./Pages/enshi/images/%E5%A4%A7%E5%B3%A1%E8%B0%B701.jpg" alt="大峡谷" loading="lazy"><span>大峡谷</span></a><a class="thumb" href="./travel/index.html"><img src="./Pages/enshi/images/%E5%A5%B3%E5%84%BF%E5%9F%8E01.jpg" alt="女儿城" loading="lazy"><span>女儿城</span></a><a class="thumb" href="./travel/index.html"><img src="./Pages/enshi/images/%E5%B1%8F%E5%B1%B101.jpg" alt="屏山" loading="lazy"><span>屏山</span></a>
         </div>
     </div>
 </section>
@@ -85,6 +98,33 @@
         <p class="muted">手写 HTML / CSS / JS，静态生成，托管于 GitHub Pages。</p>
     </div>
 </footer>
+<div class="gplayer" id="gplayer" data-folded="true" role="region" aria-label="播放器">
+    <button class="gp-toggle" type="button" aria-label="展开播放器">
+        <img class="gp-mini-cover" alt="">
+    </button>
+    <div class="gp-card">
+        <div class="gp-drag" title="按住拖动位置">
+            <img class="gp-cover" alt="">
+            <div class="gp-meta">
+                <div class="gp-title"></div>
+                <div class="gp-sub"></div>
+            </div>
+            <button class="gp-fold" type="button" aria-label="收起播放器">–</button>
+        </div>
+        <div class="gp-seek">
+            <span class="gp-cur">0:00</span>
+            <input type="range" min="0" max="100" value="0" aria-label="播放进度">
+            <span class="gp-dur">0:00</span>
+        </div>
+        <div class="gp-btns">
+            <button class="prev" type="button" aria-label="上一首">⏮</button>
+            <button class="play" type="button" aria-label="播放/暂停">▶</button>
+            <button class="next" type="button" aria-label="下一首">⏭</button>
+        </div>
+    </div>
+</div>
+<audio id="gaudio" preload="metadata"></audio>
+<script type="application/json" id="site-playlist">[{"src":"./Pages/music/music/Bad%20Style%20-%20Time%20Back.mp3","title":"Time Back","sub":"Bad Style","cover":"./Pages/music/img/Kontrabanda-Bad%20Style.jpg"},{"src":"./Pages/music/music/Be%20As%20One.mP3","title":"Be As One","sub":"w-inds.","cover":"./Pages/music/img/w-inds.10th%20Anniversary%20Best%20Album-We%20sing%20for%20yo.jpg"},{"src":"./Pages/music/music/Gavin%20James%20-%20Nervous%20-%20The%20Ooh%20Song%20(Mark%20McCabe%20Remix).mp3","title":"Nervous (The Ooh Song)","sub":"Gavin James · Mark McCabe Remix","cover":"./Pages/music/img/Nervous%20(The%20Ooh%20Song_%20Mark%20McCabe%20Remix)-Gavin%20J.jpg"},{"src":"./Pages/music/music/%E5%91%A8%E6%98%9F%E9%A9%B0%20-%20%E6%9D%8E%E9%A6%99%E5%85%B0.mp3","title":"李香兰","sub":"国产凌凌漆 电影原声带","cover":"./Pages/music/img/%E5%9B%BD%E4%BA%A7%E5%87%8C%E5%87%8C%E6%BC%86%20%E7%94%B5%E5%BD%B1%E5%8E%9F%E5%A3%B0%E5%B8%A6-%E5%91%A8%E6%98%9F%E9%A9%B0.jpg"},{"src":"./Pages/music/music/%E7%8E%89%E7%92%87%E7%8E%91%20-%20%E7%A7%A6%E6%B7%AE%E5%85%AB%E8%89%B3.mp3","title":"秦淮八艳","sub":"玉璇玑","cover":"./Pages/music/img/%E7%A7%A6%E6%B7%AE%E5%85%AB%E8%89%B3-%E7%8E%89%E7%92%87%E7%8E%91.jpg"},{"src":"./Pages/music/music/%E8%AE%B8%E5%B5%A9%20-%20%E7%A7%8B%E5%8D%83%E5%9D%A0.mp3","title":"秋千坠","sub":"许嵩","cover":"./Pages/music/img/%E6%83%85%E4%BE%A3%E8%A3%85-%E8%AE%B8%E5%B5%A9.jpg"},{"src":"./Pages/music/music/%E9%A9%AC%E9%A0%94%20-%20%E5%8D%97%E5%B1%B1%E5%8D%97.mp3","title":"南山南","sub":"马頔","cover":"./Pages/music/img/%E5%BE%80%E5%A4%8D%E9%9A%8F%E5%AE%89-%E9%A9%AC%E9%A0%94.jpg"},{"src":"./Pages/music/music/%E9%BB%84%E8%AF%97%E6%89%B6%20-%20%E6%8E%A2%E6%B8%85%E6%B0%B4%E6%B2%B3.mp3","title":"探清水河","sub":"黄诗扶","cover":"./Pages/music/img/%E4%BA%BA%E9%97%B4%E4%B8%8D%E5%80%BC%E5%BE%97-%E9%BB%84%E8%AF%97%E6%89%B6.jpg"}]</script>
 <script src="./js/site.js" defer></script>
 
 </body>
