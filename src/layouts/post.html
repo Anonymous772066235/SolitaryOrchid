@@ -1,0 +1,27 @@
+<div class="progress-bar" aria-hidden="true"></div>
+<div class="wrap">
+    <header class="article-head">
+        <div class="post-meta">
+            <span>{{DATE}}</span>
+            <span>{{READTIME}}</span>
+            <span>{{TAGS}}</span>
+        </div>
+        <h1>{{TITLE}}</h1>
+        <p class="muted">{{SUMMARY}}</p>
+    </header>
+
+    <div class="article-layout">
+        <article class="prose">
+{{CONTENT}}
+        </article>
+        <aside class="toc" aria-label="目录">
+            <h4>目录</h4>
+{{TOC}}
+        </aside>
+    </div>
+
+    <nav class="post-nav" aria-label="上一篇与下一篇">
+{{PREV}}
+{{NEXT}}
+    </nav>
+</div>

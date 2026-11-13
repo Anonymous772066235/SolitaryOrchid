@@ -1,0 +1,56 @@
+<section class="hero">
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+    <div class="wrap hero-inner">
+        <span class="hero-eyebrow">三维数据处理与可视化 · 生活碎片</span>
+        <h1>把兴趣写成<em>可以慢慢长大的页面</em></h1>
+        <p class="lead">这里记录技术笔记（三维数据处理、可视化、前端）与生活里的小事：听歌、看剧、涂鸦、旅行。内容用 Markdown 写，构建成静态页。</p>
+        <div class="hero-actions">
+            <a class="btn btn-primary" href="{{ROOT}}posts/index.html">读文章</a>
+            <a class="btn" href="{{ROOT}}about/index.html">关于我</a>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="wrap">
+        <div class="section-head">
+            <h2>最新文章</h2>
+            <a href="{{ROOT}}posts/index.html">全部文章 →</a>
+        </div>
+        <div class="cards">
+{{LATEST}}
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="wrap">
+        <div class="section-head"><h2>逛逛别的</h2></div>
+        <div class="cards">
+            <a class="card" href="{{ROOT}}gallery/index.html">
+                <span class="card-kicker">Gallery</span>
+                <h3>乱涂乱画</h3>
+                <p>2014 年至今的涂鸦，点开可看大图。</p>
+                <span class="card-meta">16 张 · 年份筛选</span>
+            </a>
+            <a class="card" href="{{ROOT}}music/index.html">
+                <span class="card-kicker">Music</span>
+                <h3>听歌看剧</h3>
+                <p>几首单曲循环，和几部反复看的电影。</p>
+                <span class="card-meta">8 首 · 内置播放器</span>
+            </a>
+            <a class="card" href="{{ROOT}}Pages/enshi/enshi.html">
+                <span class="card-kicker">Travel</span>
+                <h3>湖北恩施</h3>
+                <p>鄂西林海、华中药库、世界硒都。</p>
+                <span class="card-meta">旅行记录</span>
+            </a>
+            <a class="card" href="{{ROOT}}about/index.html">
+                <span class="card-kicker">About</span>
+                <h3>关于</h3>
+                <p>时间线、在折腾的事、怎么找我。</p>
+                <span class="card-meta">更新中</span>
+            </a>
+        </div>
+    </div>
+</section>

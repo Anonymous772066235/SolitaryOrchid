@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>用 Canvas 2D 画一朵旋转的点云 · 随手记</title>
+<meta name="description" content="不引入 Three.js，只用一个 canvas 和几十行数学，把球面点云投影到屏幕：旋转、透视、深度衰减。">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../css/site.css">
+<link rel="alternate" type="application/atom+xml" title="随手记" href="../../feed.xml">
+
+</head>
+<body>
+<header class="site-header">
+    <div class="wrap header-inner">
+        <a class="brand" href="../../index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">随手记</span></a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">菜单</button>
+        <nav id="site-nav" class="site-nav" aria-label="主导航"><a href="../../index.html">首页</a><a class="active" href="../../posts/index.html">文章</a><a href="../../gallery/index.html">涂鸦</a><a href="../../music/index.html">听歌</a><a href="../../Pages/enshi/enshi.html">旅行</a><a href="../../about/index.html">关于</a></nav>
+        <button class="theme-toggle" type="button" aria-label="切换深浅色">◐</button>
+    </div>
+</header>
+<main>
+<div class="progress-bar" aria-hidden="true"></div>
+<div class="wrap">
+    <header class="article-head">
+        <div class="post-meta">
+            <span>2026-11-13</span>
+            <span>约 2 分钟</span>
+            <span><span class="chip">可视化</span> <span class="chip">三维</span> <span class="chip">前端</span></span>
+        </div>
+        <h1>用 Canvas 2D 画一朵旋转的点云</h1>
+        <p class="muted">不引入 Three.js，只用一个 canvas 和几十行数学，把球面点云投影到屏幕：旋转、透视、深度衰减。</p>
+    </header>
+
+    <div class="article-layout">
+        <article class="prose">
+<p>首页背景那团缓慢旋转的点云，没有用 WebGL，也没有引入图形库——它只是把三维点做了一次旋转和透视除法，然后画成小圆点。</p>
+<h2 id="sec-1">三维点从哪来</h2>
+<p>球面均匀采样最省事的做法是先随机一个 <code>u ∈ [-1, 1]</code>，再随机一个角度 <code>θ</code>：</p>
+<pre><code class="language-text">r = sqrt(1 - u²)
+x = r · cos(θ)
+y = u
+z = r · sin(θ)</code></pre>
+<p>这样点会均匀铺在球面上，而不是在两极堆叠。为了让形状更像「点云」而不是「毛球」，我又补了一圈半径略大的环状点，压扁在赤道附近。</p>
+<h2 id="sec-2">旋转与投影</h2>
+<p>绕 Y 轴旋转只需要两个三角函数：</p>
+<pre><code class="language-text">x' = x·cos(t) - z·sin(t)
+z' = x·sin(t) + z·cos(t)</code></pre>
+<p>再绕 X 轴倾斜一点，让画面有俯视感。投影用最简单的透视：</p>
+<pre><code class="language-text">persp = d / (d + z')
+sx = cx + x' · scale · persp
+sy = cy + y' · scale · persp</code></pre>
+<p><code>d</code> 是相机距离，取一个大于最大节点距离的值，避免除以零。</p>
+<h2 id="sec-3">深度决定顺序与亮度</h2>
+<p>真正的三维渲染要按深度排序、做遮挡。这里只要「看起来像那么回事」，所以不排序，改用两件事表达远近：</p>
+<ul>
+<li>半径：<code>size = base · persp</code>，近处大、远处小</li>
+<li>透明度与色相：越近越亮、越偏冷色</li>
+</ul>
+<pre><code class="language-text">depth = clamp((1 - z' / 2.2) / 2, 0, 1)
+alpha = 0.16 + depth · 0.75
+hue   = 218 + depth · 52</code></pre>
+<h2 id="sec-4">性能上的取舍</h2>
+<ul>
+<li>点数控制在 900 以内，<code>requestAnimationFrame</code> 每帧只做三角函数与 <code>arc</code>，没有对象分配</li>
+<li>用 <code>devicePixelRatio</code> 缩放画布，最多取 2 倍，避免高分屏上过于昂贵的填充</li>
+<li>尊重 <code>prefers-reduced-motion</code>：用户关闭动画时只渲染一帧静态点云</li>
+</ul>
+<p>如果哪天想要真正的遮挡关系、法线与光照，那就得换 WebGL（Three.js 或原生着色器）；但对一个装饰性的背景而言，Canvas 2D 的性价比高得多。</p>
+        </article>
+        <aside class="toc" aria-label="目录">
+            <h4>目录</h4>
+<ol><li class="lvl-2"><a href="#sec-1">三维点从哪来</a></li><li class="lvl-2"><a href="#sec-2">旋转与投影</a></li><li class="lvl-2"><a href="#sec-3">深度决定顺序与亮度</a></li><li class="lvl-2"><a href="#sec-4">性能上的取舍</a></li></ol>
+        </aside>
+    </div>
+
+    <nav class="post-nav" aria-label="上一篇与下一篇">
+<a href="../../posts/from-showcase-to-blog/index.html"><span>下一篇 →</span>从展示页到内容站</a>
+
+    </nav>
+</div>
+
+</main>
+<footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 随手记 · <a href="../../feed.xml">RSS</a> · <a href="../../posts/index.html">文章归档</a> · <a href="../../about/index.html">关于</a></p>
+        <p class="muted">手写 HTML / CSS / JS，静态生成，托管于 GitHub Pages。</p>
+    </div>
+</footer>
+<script src="../../js/site.js" defer></script>
+
+</body>
+</html>

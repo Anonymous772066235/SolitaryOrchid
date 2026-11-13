@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>随手记</title>
+  <subtitle>三维数据处理与可视化 · 生活碎片</subtitle>
+  <link href="https://anonymous772066235.github.io/SolitaryOrchid/feed.xml" rel="self"/>
+  <link href="https://anonymous772066235.github.io/SolitaryOrchid/"/>
+  <updated>2026-11-13T15:41:40+08:00</updated>
+  <id>https://anonymous772066235.github.io/SolitaryOrchid/</id>
+  <entry>
+    <title>一个够用的静态构建脚本</title>
+    <link href="https://anonymous772066235.github.io/SolitaryOrchid/posts/static-build-pipeline/"/>
+    <id>https://anonymous772066235.github.io/SolitaryOrchid/posts/static-build-pipeline/</id>
+    <updated>2026-11-13T00:00:00+08:00</updated>
+    <summary>不装任何运行时，只用系统自带的脚本把 Markdown 变成整站 HTML：解析 front matter、转换正文、生成归档与订阅源。</summary>
+  </entry>
+  <entry>
+    <title>从展示页到内容站</title>
+    <link href="https://anonymous772066235.github.io/SolitaryOrchid/posts/from-showcase-to-blog/"/>
+    <id>https://anonymous772066235.github.io/SolitaryOrchid/posts/from-showcase-to-blog/</id>
+    <updated>2026-11-13T00:00:00+08:00</updated>
+    <summary>把 4 个互不相干的展示页，改造成一个有文章、有归档、能持续生长的静态站。</summary>
+  </entry>
+  <entry>
+    <title>用 Canvas 2D 画一朵旋转的点云</title>
+    <link href="https://anonymous772066235.github.io/SolitaryOrchid/posts/canvas-point-cloud/"/>
+    <id>https://anonymous772066235.github.io/SolitaryOrchid/posts/canvas-point-cloud/</id>
+    <updated>2026-11-13T00:00:00+08:00</updated>
+    <summary>不引入 Three.js，只用一个 canvas 和几十行数学，把球面点云投影到屏幕：旋转、透视、深度衰减。</summary>
+  </entry>
+</feed>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>从展示页到内容站 · 随手记</title>
+<meta name="description" content="把 4 个互不相干的展示页，改造成一个有文章、有归档、能持续生长的静态站。">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../css/site.css">
+<link rel="alternate" type="application/atom+xml" title="随手记" href="../../feed.xml">
+
+</head>
+<body>
+<header class="site-header">
+    <div class="wrap header-inner">
+        <a class="brand" href="../../index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">随手记</span></a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">菜单</button>
+        <nav id="site-nav" class="site-nav" aria-label="主导航"><a href="../../index.html">首页</a><a class="active" href="../../posts/index.html">文章</a><a href="../../gallery/index.html">涂鸦</a><a href="../../music/index.html">听歌</a><a href="../../Pages/enshi/enshi.html">旅行</a><a href="../../about/index.html">关于</a></nav>
+        <button class="theme-toggle" type="button" aria-label="切换深浅色">◐</button>
+    </div>
+</header>
+<main>
+<div class="progress-bar" aria-hidden="true"></div>
+<div class="wrap">
+    <header class="article-head">
+        <div class="post-meta">
+            <span>2026-11-13</span>
+            <span>约 3 分钟</span>
+            <span><span class="chip">建站</span> <span class="chip">重构</span></span>
+        </div>
+        <h1>从展示页到内容站</h1>
+        <p class="muted">把 4 个互不相干的展示页，改造成一个有文章、有归档、能持续生长的静态站。</p>
+    </header>
+
+    <div class="article-layout">
+        <article class="prose">
+<p>这个站最早是本科 Web 前端课的作业：一个模板主页加三个「爱好展示页」。后来重新激活，想法变成「当成个人博客的雏形」。但当时的结构很难支撑写作——每加一篇内容，都要手改上千行 HTML。</p>
+<h2 id="sec-1">为什么要重构</h2>
+<p>原来的问题很具体：</p>
+<ul>
+<li>4 个页面各自引用不同的 Bootstrap 版本，样式互不相通</li>
+<li>首页只有一段自我介绍和 6 个按钮，没有「最新动态」</li>
+<li>旅行页里塞了将近 4000 行内联 CSS，实际用到的不到两成</li>
+<li>想加一篇文章，只能复制一个 HTML 再改，写到第三篇就会放弃</li>
+</ul>
+<p>结论：先把<strong>信息架构</strong>理顺，再谈视觉。</p>
+<h2 id="sec-2">新的信息架构</h2>
+<p>现在按「内容类型」而不是「文件位置」组织：</p>
+<ul>
+<li><code>/posts/</code> 文章列表与文章页，正文用 Markdown 写</li>
+<li><code>/gallery/</code> 涂鸦，带年份筛选和灯箱</li>
+<li><code>/music/</code> 听歌看剧，页面底部有常驻的迷你播放器</li>
+<li><code>/Pages/enshi/</code> 旅行记录（旧的模板页暂时保留，链接不变）</li>
+<li><code>/about/</code> 关于与时间线</li>
+</ul>
+<p>首页只做三件事：一句话说明这个站在记什么、最新三篇文章、其余入口。</p>
+<h2 id="sec-3">静态生成的方式</h2>
+<p>没有引入重型框架，而是用一个构建脚本把 Markdown、模板和页面拼成静态 HTML：</p>
+<ol>
+<li>读 <code>src/content/posts/*.md</code>，解析 front matter（标题、日期、标签、摘要）</li>
+<li>把正文转换成 HTML，同时抽取二级、三级标题生成目录</li>
+<li>套进 <code>src/layouts/*.html</code> 模板，按输出深度替换相对路径</li>
+<li>顺带生成文章列表、首页最新文章、<code>sitemap.xml</code>、<code>feed.xml</code> 和自定义 <code>404.html</code></li>
+</ol>
+<p>好处是构建产物就是纯 HTML，GitHub Pages 直接托管，访客端零 JS 也能读正文。</p>
+<blockquote>
+<p>写作流程因此变成：新建一个 md 文件 → 跑一次构建 → 提交推送。</p>
+</blockquote>
+<h2 id="sec-4">几个小彩蛋</h2>
+<p>重构顺手加了点「不像作业」的东西：</p>
+<ul>
+<li>首页的点云动画：<code><canvas></code> 里手写三维旋转与透视投影，不依赖 Three.js</li>
+<li>右下角常驻播放器：记住上次听到的曲目与位置</li>
+<li>深浅色切换：跟随系统，也能手动切换并记住选择</li>
+<li>文章阅读进度条与目录高亮</li>
+</ul>
+<p>下一步打算补上评论（基于 GitHub Discussions 的 giscus）和站内搜索，再慢慢把旅行页也迁进新结构。</p>
+        </article>
+        <aside class="toc" aria-label="目录">
+            <h4>目录</h4>
+<ol><li class="lvl-2"><a href="#sec-1">为什么要重构</a></li><li class="lvl-2"><a href="#sec-2">新的信息架构</a></li><li class="lvl-2"><a href="#sec-3">静态生成的方式</a></li><li class="lvl-2"><a href="#sec-4">几个小彩蛋</a></li></ol>
+        </aside>
+    </div>
+
+    <nav class="post-nav" aria-label="上一篇与下一篇">
+<a href="../../posts/static-build-pipeline/index.html"><span>下一篇 →</span>一个够用的静态构建脚本</a>
+<a href="../../posts/canvas-point-cloud/index.html"><span>← 上一篇</span>用 Canvas 2D 画一朵旋转的点云</a>
+    </nav>
+</div>
+
+</main>
+<footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 随手记 · <a href="../../feed.xml">RSS</a> · <a href="../../posts/index.html">文章归档</a> · <a href="../../about/index.html">关于</a></p>
+        <p class="muted">手写 HTML / CSS / JS，静态生成，托管于 GitHub Pages。</p>
+    </div>
+</footer>
+<script src="../../js/site.js" defer></script>
+
+</body>
+</html>

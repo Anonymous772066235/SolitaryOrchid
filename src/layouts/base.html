@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<meta name="description" content="{{DESC}}">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="{{ROOT}}favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="{{ROOT}}css/site.css">
+<link rel="alternate" type="application/atom+xml" title="{{SITE_TITLE}}" href="{{ROOT}}feed.xml">
+{{EXTRA_HEAD}}
+</head>
+<body>
+<header class="site-header">
+    <div class="wrap header-inner">
+        <a class="brand" href="{{ROOT}}index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">{{SITE_TITLE}}</span></a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">菜单</button>
+        <nav id="site-nav" class="site-nav" aria-label="主导航">{{NAV}}</nav>
+        <button class="theme-toggle" type="button" aria-label="切换深浅色">◐</button>
+    </div>
+</header>
+<main>
+{{BODY}}
+</main>
+<footer class="site-footer">
+    <div class="wrap">
+        <p>© {{YEAR}} {{SITE_TITLE}} · <a href="{{ROOT}}feed.xml">RSS</a> · <a href="{{ROOT}}posts/index.html">文章归档</a> · <a href="{{ROOT}}about/index.html">关于</a></p>
+        <p class="muted">手写 HTML / CSS / JS，静态生成，托管于 GitHub Pages。</p>
+    </div>
+</footer>
+<script src="{{ROOT}}js/site.js" defer></script>
+{{EXTRA_FOOT}}
+</body>
+</html>

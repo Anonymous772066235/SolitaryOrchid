@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>一个够用的静态构建脚本 · 随手记</title>
+<meta name="description" content="不装任何运行时，只用系统自带的脚本把 Markdown 变成整站 HTML：解析 front matter、转换正文、生成归档与订阅源。">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../css/site.css">
+<link rel="alternate" type="application/atom+xml" title="随手记" href="../../feed.xml">
+
+</head>
+<body>
+<header class="site-header">
+    <div class="wrap header-inner">
+        <a class="brand" href="../../index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">随手记</span></a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">菜单</button>
+        <nav id="site-nav" class="site-nav" aria-label="主导航"><a href="../../index.html">首页</a><a class="active" href="../../posts/index.html">文章</a><a href="../../gallery/index.html">涂鸦</a><a href="../../music/index.html">听歌</a><a href="../../Pages/enshi/enshi.html">旅行</a><a href="../../about/index.html">关于</a></nav>
+        <button class="theme-toggle" type="button" aria-label="切换深浅色">◐</button>
+    </div>
+</header>
+<main>
+<div class="progress-bar" aria-hidden="true"></div>
+<div class="wrap">
+    <header class="article-head">
+        <div class="post-meta">
+            <span>2026-11-13</span>
+            <span>约 2 分钟</span>
+            <span><span class="chip">工具</span> <span class="chip">构建</span></span>
+        </div>
+        <h1>一个够用的静态构建脚本</h1>
+        <p class="muted">不装任何运行时，只用系统自带的脚本把 Markdown 变成整站 HTML：解析 front matter、转换正文、生成归档与订阅源。</p>
+    </header>
+
+    <div class="article-layout">
+        <article class="prose">
+<p>这个站没有 Node、没有打包器，构建靠一个系统脚本完成。虽然简陋，但覆盖了写博客真正需要的部分。</p>
+<h2 id="sec-1">输入与输出</h2>
+<p>输入是两类东西：</p>
+<ul>
+<li><code>src/content/posts/*.md</code>：每篇文章一个文件，开头是 front matter</li>
+<li><code>src/layouts/*.html</code>：模板，用 <code>&#123;&#123;TITLE&#125;&#125;</code>、<code>&#123;&#123;BODY&#125;&#125;</code> 这类占位符</li>
+</ul>
+<p>输出是整站静态文件：首页、文章列表、每篇文章、<code>sitemap.xml</code>、<code>feed.xml</code>、<code>404.html</code>。</p>
+<h2 id="sec-2">front matter 解析</h2>
+<p>只用最朴素的分隔符与键值对：</p>
+<pre><code class="language-text">---
+title: 文章标题
+date: 2026-11-13
+tags: 可视化, 前端
+summary: 一句话摘要
+---</code></pre>
+<p>解析时把第一对 <code>---</code> 之间的内容按行切开，用 <code>键: 值</code> 建立字典，剩下的部分是正文。</p>
+<h2 id="sec-3">Markdown 子集</h2>
+<p>完整实现 Markdown 规范没有必要。实际写作中，九成内容只用这些语法：二级三级标题、段落、无序列表、代码块、引用、分隔线，以及行内粗体、行内代码和链接。</p>
+<p>转换的关键是<strong>顺序</strong>：</p>
+<ol>
+<li>先把代码块抽出来做占位，避免里面的 <code>#</code> 和 <code>*</code> 被当成标题或强调</li>
+<li>再逐行处理块级元素（标题、列表、引用、分隔线）</li>
+<li>剩下的连续行合成段落</li>
+<li>最后统一处理行内语法，并把代码块还原成 <code><pre><code></code></li>
+</ol>
+<p>顺手在生成标题时收集编号，就能拼出文章目录。</p>
+<h2 id="sec-4">相对路径的处理</h2>
+<p>站点既可能部署在域名根目录，也可能在 <code>/<repo>/</code> 这样的子路径下。所以模板里所有链接都写成 <code>&#123;&#123;ROOT&#125;&#125;</code> 占位，构建时按输出深度替换：</p>
+<ul>
+<li>根目录的页面 → <code>./</code></li>
+<li><code>posts/<slug>/</code> 下的文章 → <code>../../</code></li>
+</ul>
+<p>这样同一套模板可以放到任意层级，不需要知道最终的域名。</p>
+<h2 id="sec-5">什么不做</h2>
+<ul>
+<li>不做增量构建：全量重建不到一秒，没必要</li>
+<li>不做模板继承：三个模板各写一份，比实现继承逻辑更省心</li>
+<li>不做插件系统：需要新能力时直接改脚本</li>
+</ul>
+<p>顺着这个思路，评论可以用第三方脚本挂载，搜索可以用构建期生成的索引，都无需把整个站点改造成 SPA。</p>
+        </article>
+        <aside class="toc" aria-label="目录">
+            <h4>目录</h4>
+<ol><li class="lvl-2"><a href="#sec-1">输入与输出</a></li><li class="lvl-2"><a href="#sec-2">front matter 解析</a></li><li class="lvl-2"><a href="#sec-3">Markdown 子集</a></li><li class="lvl-2"><a href="#sec-4">相对路径的处理</a></li><li class="lvl-2"><a href="#sec-5">什么不做</a></li></ol>
+        </aside>
+    </div>
+
+    <nav class="post-nav" aria-label="上一篇与下一篇">
+
+<a href="../../posts/from-showcase-to-blog/index.html"><span>← 上一篇</span>从展示页到内容站</a>
+    </nav>
+</div>
+
+</main>
+<footer class="site-footer">
+    <div class="wrap">
+        <p>© 2026 随手记 · <a href="../../feed.xml">RSS</a> · <a href="../../posts/index.html">文章归档</a> · <a href="../../about/index.html">关于</a></p>
+        <p class="muted">手写 HTML / CSS / JS，静态生成，托管于 GitHub Pages。</p>
+    </div>
+</footer>
+<script src="../../js/site.js" defer></script>
+
+</body>
+</html>
